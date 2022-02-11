@@ -1,0 +1,23 @@
+version: "3.7"
+
+networks: 
+  ghost_net:
+    driver: bridge
+
+services:
+  ghost:
+    networks: 
+      - ghost_net
+    image: ghost:latest
+    restart: unless-stopped
+    ports:
+      - 8080:2368 
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - $APPDATA_DIR/ghost:/var/lib/ghost/content
+    environment:
+      # this url value is just an example, and is likely wrong for your environment!
+      url: https://$DOMAINNAME
+      # NODE_ENV: production
+      NODE_ENV: development

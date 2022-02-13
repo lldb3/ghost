@@ -6,43 +6,7 @@ networks:
 
 #### TODO: change the service names (ghost_XXX) if you want better naming, remember to match them in nginx config
 services:
-  ghost_one:
-    networks: 
-      - ghost_net
-    image: ghost:latest
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - $DATA_DIR/$FIRST_BLOG_NAME/content:/var/lib/ghost/content
-    depends_on:
-      - swag
-    environment:
-      - url=https://$FIRST_DOMAINNAME
-      - server__host=0.0.0.0
-      - server__port=2368
-      - imageOptimization__resize=false
-      - NODE_ENV=production   # TODO: use 'production' or 'development accordingly'
-
-  # ghost_two:
-  #   networks: 
-  #     - ghost_net
-  #   image: ghost:latest
-  #   restart: unless-stopped
-  #   security_opt:
-  #     - no-new-privileges:true
-  #   volumes:
-  #     - $DATA_DIR/$SECOND_BLOG_NAME/content:/var/lib/ghost/content
-  #   depends_on:
-  #     - swag
-  #   environment:
-  #     - url=https://$SECOND_DOMAINNAME
-  #     - server__host=0.0.0.0
-  #     - server__port=2368
-  #     - imageOptimization__resize=false
-  #     - NODE_ENV=production   # TODO: use 'production' or 'development accordingly'
-
-
+  ### SWAG: Letsencrypt
   swag:
     image: ghcr.io/linuxserver/swag
     restart: unless-stopped
@@ -74,3 +38,41 @@ services:
       - $CONFIG_DIR/swag/config:/config
       - ./cloudflare.ini:/config/dns-conf/cloudflare.ini:ro
       - $CONFIG_DIR/nginx/default:/config/nginx/site-confs/default
+
+  ghost_one:
+    networks: 
+      - ghost_net
+    image: ghost:latest
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - $DATA_DIR/$FIRST_BLOG_NAME/content:/var/lib/ghost/content
+    depends_on:
+      - swag
+    environment:
+      - url=https://$FIRST_DOMAINNAME
+      - server__host=0.0.0.0
+      - server__port=2368
+      - imageOptimization__resize=false
+      - NODE_ENV=production   # TODO: use 'production' or 'development accordingly'
+
+## More Ghost Instances, duplicate bellow config and change params in SWAG instance
+  # ghost_two:
+  #   networks: 
+  #     - ghost_net
+  #   image: ghost:latest
+  #   restart: unless-stopped
+  #   security_opt:
+  #     - no-new-privileges:true
+  #   volumes:
+  #     - $DATA_DIR/$SECOND_BLOG_NAME/content:/var/lib/ghost/content
+  #   depends_on:
+  #     - swag
+  #   environment:
+  #     - url=https://$SECOND_DOMAINNAME
+  #     - server__host=0.0.0.0
+  #     - server__port=2368
+  #     - imageOptimization__resize=false
+  #     - NODE_ENV=production   # TODO: use 'production' or 'development accordingly'
+

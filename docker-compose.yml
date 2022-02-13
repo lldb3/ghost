@@ -57,9 +57,10 @@ services:
       - TZ=$TZ
       # Cert domain info
       - URL=$FIRST_DOMAINNAME
-      - SUBDOMAINS=www # optionally use 'wildcard' for a wildcard certificate
+      - SUBDOMAINS=wildcard
+      # - SUBDOMAINS=www # optionally use 'wildcard' for a wildcard certificate
       - ONLY_SUBDOMAINS=false #optional
-      - EXTRA_DOMAINS=$SECOND_DOMAINNAME   # if in need of secondary blog, untick this  
+      # - EXTRA_DOMAINS=$SECOND_DOMAINNAME   # if in need of secondary blog, untick this  
       # Cert validation and parameters
       - VALIDATION=dns
       - DNSPLUGIN=cloudflare

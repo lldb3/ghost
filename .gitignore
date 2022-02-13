@@ -2,3 +2,4 @@
 config/letsencrypt
 data/*
 cloudflare.ini
+config/nginx/default

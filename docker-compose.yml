@@ -24,23 +24,23 @@ services:
       - imageOptimization__resize=false
       - NODE_ENV=production   # TODO: use 'production' or 'development accordingly'
 
-  # ghost_two:
-  #   networks: 
-  #     - ghost_net
-  #   image: ghost:latest
-  #   restart: unless-stopped
-  #   security_opt:
-  #     - no-new-privileges:true
-  #   volumes:
-  #     - $DATA_DIR/$SECOND_BLOG_NAME/content:/var/lib/ghost/content
-  #   depends_on:
-  #     - letsencrypt
-  #   environment:
-  #     - url=https://$SECOND_DOMAINNAME
-  #     - server__host=0.0.0.0
-  #     - server__port=2368
-  #     - imageOptimization__resize=false
-  #     - NODE_ENV=production   # TODO: use 'production' or 'development accordingly'
+  ghost_two:
+    networks: 
+      - ghost_net
+    image: ghost:latest
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - $DATA_DIR/$SECOND_BLOG_NAME/content:/var/lib/ghost/content
+    depends_on:
+      - letsencrypt
+    environment:
+      - url=https://$SECOND_DOMAINNAME
+      - server__host=0.0.0.0
+      - server__port=2368
+      - imageOptimization__resize=false
+      - NODE_ENV=production   # TODO: use 'production' or 'development accordingly'
 
 
   letsencrypt:
@@ -61,8 +61,8 @@ services:
       - EMAIL=$CERT_POSTMASTER_MAIL
       - DHLEVEL=4096 # Default is 2048
       - ONLY_SUBDOMAINS=false #optional
-      # - EXTRA_DOMAINS=$SECOND_DOMAINNAME   # if in need of secondary blog, untick this  
-      - STAGING=false #optional, use it when unsure about if the certification will work
+      - EXTRA_DOMAINS=$SECOND_DOMAINNAME   # if in need of secondary blog, untick this  
+      - STAGING=true #optional, use it when unsure about if the certification will work
     ports:
       - "443:443"
       - "80:80"

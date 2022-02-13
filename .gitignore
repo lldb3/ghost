@@ -1,5 +1,6 @@
 .env
 config/letsencrypt
+config/swag
+config/nginx/default
 data/*
 cloudflare.ini
-config/nginx/default

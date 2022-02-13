@@ -16,7 +16,7 @@ services:
     volumes:
       - $DATA_DIR/$FIRST_BLOG_NAME/content:/var/lib/ghost/content
     depends_on:
-      - letsencrypt
+      - swag
     environment:
       - url=https://$FIRST_DOMAINNAME
       - server__host=0.0.0.0
@@ -34,7 +34,7 @@ services:
     volumes:
       - $DATA_DIR/$SECOND_BLOG_NAME/content:/var/lib/ghost/content
     depends_on:
-      - letsencrypt
+      - swag
     environment:
       - url=https://$SECOND_DOMAINNAME
       - server__host=0.0.0.0
@@ -43,10 +43,10 @@ services:
       - NODE_ENV=production   # TODO: use 'production' or 'development accordingly'
 
 
-  letsencrypt:
-    image: linuxserver/letsencrypt
+  swag:
+    image: ghcr.io/linuxserver/swag
     restart: unless-stopped
-    container_name: letsencrypt
+    container_name: swag
     networks:
       - ghost_net
     cap_add:
@@ -55,18 +55,21 @@ services:
       - PUID=$PUID
       - PGID=$PGID
       - TZ=$TZ
+      # Cert domain info
       - URL=$FIRST_DOMAINNAME
+      - SUBDOMAINS=www # optionally use 'wildcard' for a wildcard certificate
+      - ONLY_SUBDOMAINS=false #optional
+      - EXTRA_DOMAINS=$SECOND_DOMAINNAME   # if in need of secondary blog, untick this  
+      # Cert validation and parameters
       - VALIDATION=dns
       - DNSPLUGIN=cloudflare
       - EMAIL=$CERT_POSTMASTER_MAIL
       - DHLEVEL=4096 # Default is 2048
-      - ONLY_SUBDOMAINS=false #optional
-      - EXTRA_DOMAINS=$SECOND_DOMAINNAME   # if in need of secondary blog, untick this  
-      - STAGING=true #optional, use it when unsure about if the certification will work
+      - STAGING=true # use staging to test config first
     ports:
       - "443:443"
       - "80:80"
     volumes:
-      - $CONFIG_DIR/letsencrypt/config:/config
+      - $CONFIG_DIR/swag/config:/config
       - ./cloudflare.ini:/config/dns-conf/cloudflare.ini:ro
       - $CONFIG_DIR/nginx/default:/config/nginx/site-confs/default

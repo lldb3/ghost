@@ -4,3 +4,4 @@ config/swag
 config/nginx/default
 data/*
 cloudflare.ini
+secrets/*

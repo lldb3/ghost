@@ -25,16 +25,16 @@ In this scenario, use the `EXTRA_DOMAINS` option in the swag container, specifyi
 
 In the second case, you may want everything under the same domain name. This scenario is favorable if you are considering using more than one subdomain, because you can either use the `SUBDOMAINS` option with your subdomain name, or better, directly generate a wilcard certificate: `*.myblog.com`. Which will work with an infinite number of domains under `myblog.com`.
 To achieve this, use the `SUBDOMAINS=wildcard` option, it's that simple.
+
 ### Ghost Documentation
 
 If ever in doubt, some useful links: 
 - https://ghost.org/docs/hosting/
 - https://hub.docker.com/_/ghost/ 
 
-
 ### Checking SSL Rating
 
 Run a cli scan to get your SSLabs grade:
 ```bash
-docker run jumanjiman/ssllabs-scan:latest cyb3r.dev
+docker run --rm -ti  drwetter/testssl.sh CLI-OPTIONS
 ```
